@@ -1,0 +1,46 @@
+﻿@page "/chinese"
+
+<MudGrid>
+    <MudItem xs="12">
+        <h3>Generate Stories in Chinese on your level.</h3>
+
+    </MudItem>
+    <MudItem xs="12">
+        <MudForm>
+            <MudTextField T="string" Label="Story Title" />
+            <MudTextField T="string" Label="Story Content" Multiline="true" />
+            <MudSelect T="string" @bind-Value="selectedLevel" Label="Select Level">
+                @if(levels is not null)
+                {
+                    @foreach(var level in levels)
+                    {
+                        <MudSelectItem T="string" Value="level">@level</MudSelectItem>
+                    }
+                }
+            </MudSelect>
+            <MudButton OnClick="GenerateStory">Generate Story</MudButton>
+        </MudForm>
+    </MudItem>
+    @if(!string.IsNullOrWhiteSpace(StoryText))
+    {
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6">@StoryText</MudText>
+        </MudItem>
+    }
+</MudGrid>
+
+
+@code {
+    private string selectedLevel = "";
+    private List<string> levels { get; set; }
+    private string StoryText { get; set; }
+    protected override void OnInitialized()
+    {
+        levels = new List<string> { "Beginner", "Intermediate", "Advanced", "Native" };
+    }
+
+    private void GenerateStory()
+    {
+        StoryText = "你好";
+    }
+}
