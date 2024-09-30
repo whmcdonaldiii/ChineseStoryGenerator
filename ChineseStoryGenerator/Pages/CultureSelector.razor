@@ -1,0 +1,64 @@
+﻿@using System.Globalization
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+
+
+<MudSelect Variant="Variant.Outlined" style="width: 100px; text-align:center;"  T="CultureInfo" @bind-Value="selectedCulture" @bind-Value:after="ApplySelectedCultureAsync">
+    @foreach (var culture in supportedCultures)
+    {
+        <MudSelectItem T="CultureInfo" Value="@culture">@GetDisplayName(culture)</MudSelectItem>
+    }
+</MudSelect>
+
+
+@code
+{
+    private CultureInfo[] supportedCultures = new[]
+    {
+        new CultureInfo("en-US"),
+        new CultureInfo("zh-CN"),
+    };
+
+    private CultureInfo? selectedCulture { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        var cultureCode = await JS.InvokeAsync<string>("blazorCulture.get", "selectedCulture");
+        if (!string.IsNullOrEmpty(cultureCode))
+        {
+            selectedCulture = new CultureInfo(cultureCode);
+        }
+        else
+        {
+            selectedCulture = supportedCultures.FirstOrDefault(); // Set a default culture
+        }
+    }
+    // protected override void OnAfterRender(bool firstRender)
+    // {
+    //     if (firstRender)
+    //     {
+    //         selectedCulture = CultureInfo.CurrentCulture;
+
+    //     }
+    // }
+
+    private async Task ApplySelectedCultureAsync()
+    {
+        if (CultureInfo.CurrentCulture != selectedCulture)
+        {
+            await JS.InvokeVoidAsync("blazorCulture.set", selectedCulture!.Name);
+            selectedCulture = CultureInfo.CurrentCulture;
+            Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+        }
+    }
+
+    private string GetDisplayName(CultureInfo culture)
+    {
+        return culture.Name switch
+        {
+            "en-US" => "English",
+            "zh-CN" => "中文",
+            _ => culture.DisplayName // Default to system display name
+        };
+    }
+}

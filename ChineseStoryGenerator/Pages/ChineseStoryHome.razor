@@ -1,46 +1,124 @@
-﻿@page "/chinese"
+﻿@page "/"
 
-<MudGrid>
-    <MudItem xs="12">
-        <h3>Generate Stories in Chinese on your level.</h3>
+@using ChineseStoryGenerator.Services
+@using Microsoft.Extensions.Localization
+@using System.Globalization
 
-    </MudItem>
+@inject IStringLocalizer<ChineseStoryHome> Localizer
+@inject IOpenAiService OpenAiService
+@inject NavigationManager NavManager
+
+<MudGrid xs="12" Class="p-3">
     <MudItem xs="12">
-        <MudForm>
-            <MudTextField T="string" Label="Story Title" />
-            <MudTextField T="string" Label="Story Content" Multiline="true" />
-            <MudSelect T="string" @bind-Value="selectedLevel" Label="Select Level">
-                @if(levels is not null)
-                {
-                    @foreach(var level in levels)
-                    {
-                        <MudSelectItem T="string" Value="level">@level</MudSelectItem>
-                    }
-                }
-            </MudSelect>
-            <MudButton OnClick="GenerateStory">Generate Story</MudButton>
-        </MudForm>
+        <MudPaper Class="d-flex m-2 p-2" Elevation="2">
+
+            <MudGrid>
+                <MudItem xs="12">
+                    <h3>@Localizer["GenerateStoryTitle"]</h3>
+
+                </MudItem>
+                <MudItem xs="12">
+                    <MudForm>
+                        <MudTextField T="string" Label="@($"{Localizer["TitleLabel"]}: ")" @bind-Value="@storyTitle" />
+                        <MudTextField T="string" Label="@Localizer["IdeasLabel"]" @bind-Value="@storyContent" Lines="3" />
+                        <MudSelect T="string" @bind-Value="selectedLevel" Label="@Localizer["LevelLabel"]">
+                            @if (levels is not null)
+                            {
+                                @foreach (var level in levels)
+                                {
+                                    <MudSelectItem T="string" Value="level">@level</MudSelectItem>
+                                }
+                            }
+                        </MudSelect>
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="GenerateStory">@Localizer["GenerateButton"]</MudButton>
+                    </MudForm>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
     </MudItem>
-    @if(!string.IsNullOrWhiteSpace(StoryText))
+    @if (!string.IsNullOrWhiteSpace(StoryText))
     {
-        <MudItem xs="12">
-            <MudText Typo="Typo.h6">@StoryText</MudText>
+        <MudItem xs="12" Style="position:relative">
+            <MudPaper Class="d-flex m-2 p-2" Elevation="2">
+            <div class="parchment"></div>
+            <MudGrid Style="position:relative" Class="mt-2">
+                <MudItem xs="12">
+                    <MudText style="text-align:center;" Typo="Typo.h5">@StoryTitle</MudText>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h6">@StoryText</MudText>
+                </MudItem>
+            </MudGrid>
+            </MudPaper>
         </MudItem>
     }
 </MudGrid>
 
 
+<svg>
+    <filter id="wavy2">
+        <feTurbulence x="0" y="0" baseFrequency="0.02" numOctaves="5" seed="1"></feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="20" />
+    </filter>
+</svg>
+<style>
+    .parchment {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #f7f4e9;
+        border: 1px solid #b59f73; /* Slightly darker border */
+        border-radius: 5px; /* Rounded corners */
+        padding: 20px; /* Padding inside the box */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+        font-family: 'Garamond', serif; /* A serif font for a classic look */
+        line-height: 1.6; /* Improved readability */
+        width: 100%; /* Set a maximum width */
+        height: 100%;
+        margin: 20px auto; /* Center the box on the page */
+        filter: url(#wavy2);
+    }
+</style>
+
 @code {
-    private string selectedLevel = "";
+    private string storyTitle = "";
+    private string storyContent = "";
+    private string selectedLevel { get; set; }
     private List<string> levels { get; set; }
+    private string StoryTitle { get; set; }
     private string StoryText { get; set; }
     protected override void OnInitialized()
     {
-        levels = new List<string> { "Beginner", "Intermediate", "Advanced", "Native" };
+        levels = new List<string>
+        {
+            Localizer["Beginner"],
+            Localizer["Intermediate"],
+            Localizer["Advanced"],
+            Localizer["Native"]
+        };
+
+        selectedLevel = levels[0];
     }
 
-    private void GenerateStory()
+    private async Task GenerateStory()
     {
-        StoryText = "你好";
+        StoryText = "";
+        StoryTitle = "";
+
+        string titlePrompt = $"Create this title: {storyTitle} in Chinese.";
+        string storyPrompt = $"Compose story about {storyContent} using {selectedLevel} level Chinese.";
+
+        try
+        {
+
+            StoryTitle = await OpenAiService.GenerateTitleAsync(titlePrompt);
+            StoryText = await OpenAiService.GenerateStoryAsync(storyPrompt);
+
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
     }
 }

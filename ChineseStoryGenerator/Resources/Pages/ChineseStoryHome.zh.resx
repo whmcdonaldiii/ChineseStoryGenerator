@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+<data name="GenerateStoryTitle" xml:space="preserve">
+    <value>生成一个中文故事</value>
+  </data>
+<data name="TitleLabel" xml:space="preserve">
+  <value>故事标题</value>
+</data>
+<data name="IdeasLabel" xml:space="preserve">
+  <value>故事构思</value>
+</data>
+<data name="LevelLabel" xml:space="preserve">
+  <value>选择中文水平</value>
+</data>
+<data name="GenerateButton" xml:space="preserve">
+  <value>生成故事</value>
+</data>
+<data name="Beginner" xml:space="preserve">
+  <value>初级</value>
+</data>
+<data name="Intermediate" xml:space="preserve">
+  <value>中级</value>
+</data>
+<data name="Advanced" xml:space="preserve">
+  <value>高级</value>
+</data>
+<data name="Native" xml:space="preserve">
+  <value>母语</value>
+</data>
+</root>
