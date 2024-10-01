@@ -9,12 +9,15 @@ namespace ChineseStoryGenerator.Services
         private readonly AzureKeyCredential _credential;
         private readonly AzureOpenAIClient _azureClient;
         private readonly ChatClient _chatClient;
-        public OpenAiService()
+        public OpenAiService(IConfiguration configuration)
         {
-            string key = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
-            string endPoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
-            string deployment = Environment.GetEnvironmentVariable("AZURE_OPENAI_DEPLOYMENT");
+            //string? key = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
+            //string endPoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
+            //string deployment = Environment.GetEnvironmentVariable("AZURE_OPENAI_DEPLOYMENT");
 
+            string key = configuration["AZURE_OPENAI_API_KEY"];
+            string endPoint = configuration["AZURE_OPENAI_ENDPOINT"];
+            string deployment = configuration["AZURE_OPENAI_DEPLOYMENT"];
             _credential = new AzureKeyCredential(key);
             _azureClient = new(new Uri(endPoint), _credential);
             _chatClient = _azureClient.GetChatClient(deployment);
