@@ -7,24 +7,15 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.JSInterop;
 using MudBlazor.Services;
 using System.Globalization;
-using System.Net;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-var appConfigConnectionString = builder.Configuration["AppConfigConnectionString"]; // Make sure this key matches what you added in the App Service settings.
-if (!string.IsNullOrEmpty(appConfigConnectionString))
-{
-    // Add Azure App Configuration as a configuration source
-    builder.Configuration.AddAzureAppConfiguration(options =>
-        options.Connect(appConfigConnectionString) // Optional: For refreshing config
-    );
-}
-
-//string? key = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
-//string? endPoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
-//string? deployment = Environment.GetEnvironmentVariable("AZURE_OPENAI_DEPLOYMENT");
+//var appConfigConnectionString = builder.Configuration["AppConfigConnectionString"]; 
+//string? key = builder.Configuration["AZURE_OPENAI_API_KEY"];
+//string? endpoint = builder.Configuration["AZURE_OPENAI_ENDPOINT"];
+//string? deployment = builder.Configuration["AZURE_OPENAI_DEPLOYMENT"];
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 

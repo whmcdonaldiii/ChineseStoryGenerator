@@ -18,6 +18,7 @@ namespace ChineseStoryGenerator.Services
             string key = configuration["AZURE_OPENAI_API_KEY"];
             string endPoint = configuration["AZURE_OPENAI_ENDPOINT"];
             string deployment = configuration["AZURE_OPENAI_DEPLOYMENT"];
+
             _credential = new AzureKeyCredential(key);
             _azureClient = new(new Uri(endPoint), _credential);
             _chatClient = _azureClient.GetChatClient(deployment);
