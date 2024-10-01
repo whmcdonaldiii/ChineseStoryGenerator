@@ -1,0 +1,38 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy ASP.Net Core app to Azure Web App - ChineseStoryGenerator
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore
+        run: dotnet restore ./ChineseStoryGenerator.sln
+        
+      - name: Build with dotnet
+        run: dotnet build ./ChineseStoryGenerator.sln --configuration Release --no-restore
+
+      - name: dotnet publish
+        run: dotnet publish ./ChineseStoryGenerator.sln -c Release --no-build --output './publish'
+
+      - name: Deployment
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ChineseStoryGenerator
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D2A8DF5E99094649B97D6A83E1839664 }}
+          package: "./publish"
