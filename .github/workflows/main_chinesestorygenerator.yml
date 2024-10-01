@@ -29,7 +29,6 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish ./ChineseStoryGenerator.sln -c Release --no-build
-      - name: Upload artifact for deployment job
 
       - name: Deployment
         uses: azure/webapps-deploy@v3
