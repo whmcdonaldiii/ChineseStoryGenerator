@@ -67,6 +67,10 @@
   <data name="LevelLabel" xml:space="preserve">
     <value>Select Chinese Level</value>
   </data>
+  <data name="PinyinLabel" xml:space="preserve">
+    <value>Include Pinyin</value>
+  </data>
+
   <data name="GenerateButton" xml:space="preserve">
     <value>Generate Story</value>
   </data>
@@ -81,5 +85,13 @@
 </data>
 <data name="Native" xml:space="preserve">
   <value>Native</value>
+</data>
+
+<data name="Affirm" xml:space="preserve">
+  <value>Yes</value>
+</data>
+
+<data name="Reject" xml:space="preserve">
+  <value>No</value>
 </data>
 </root>

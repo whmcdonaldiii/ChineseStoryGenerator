@@ -12,6 +12,10 @@
 <data name="LevelLabel" xml:space="preserve">
   <value>选择中文水平</value>
 </data>
+<data name="PinyinLabel" xml:space="preserve">
+    <value>要拼音吗</value>
+  </data>
+
 <data name="GenerateButton" xml:space="preserve">
   <value>生成故事</value>
 </data>
@@ -26,5 +30,13 @@
 </data>
 <data name="Native" xml:space="preserve">
   <value>母语</value>
+</data>
+
+<data name="Affirm" xml:space="preserve">
+  <value>是</value>
+</data>
+
+<data name="Reject" xml:space="preserve">
+  <value>否</value>
 </data>
 </root>

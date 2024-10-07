@@ -1,8 +1,12 @@
 ﻿@page "/"
 
+@using ChineseStoryGenerator.Models
 @using ChineseStoryGenerator.Services
 @using Microsoft.Extensions.Localization
 @using System.Globalization
+@using OpenAI.Chat
+@using System.Text
+@using System.Text.RegularExpressions
 
 @inject IStringLocalizer<ChineseStoryHome> Localizer
 @inject IOpenAiService OpenAiService
@@ -30,6 +34,10 @@
                                 }
                             }
                         </MudSelect>
+                        <MudSelect T="string" Label="@($"{Localizer["PinyinLabel"]}?")" @bind-Value="@pinyinChoice">
+                            <MudSelectItem T="string" Value="@("Yes")">@Localizer["Affirm"]</MudSelectItem>
+                            <MudSelectItem T="string" Value="@("No")">@Localizer["Reject"]</MudSelectItem>
+                        </MudSelect>
                         <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="GenerateStory">@Localizer["GenerateButton"]</MudButton>
                     </MudForm>
                 </MudItem>
@@ -40,15 +48,16 @@
     {
         <MudItem xs="12" Style="position:relative">
             <MudPaper Class="d-flex m-2 p-2" Elevation="2" Style="position:relative">
-            <div class="parchment"></div>
-            <MudGrid Style="position:relative" Class="mt-2">
-                <MudItem xs="12">
-                    <MudText style="text-align:center;" Typo="Typo.h5">@StoryTitle</MudText>
-                </MudItem>
-                <MudItem xs="12">
-                    <MudText Typo="Typo.h6">@StoryText</MudText>
-                </MudItem>
-            </MudGrid>
+                <div class="parchment"></div>
+                <MudGrid Style="position:relative" Class="mt-2">
+                    <MudItem xs="12">
+                        <MudText style="text-align:center;" Typo="Typo.h5">@StoryTitle</MudText>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h6" Align="Align.Center" Style="line-height: 1; margin-top: 0px;">@StoryText</MudText>
+
+                    </MudItem>
+                </MudGrid>
             </MudPaper>
         </MudItem>
     }
@@ -84,9 +93,13 @@
     private string storyTitle = "";
     private string storyContent = "";
     private string selectedLevel { get; set; }
+    private string pinyinChoice { get; set; }
     private List<string> levels { get; set; }
     private string StoryTitle { get; set; }
     private string StoryText { get; set; }
+    private List<string> Characters { get; set; }
+    private List<string> Pinyin { get; set; }
+    List<CharacterPinyinPair> characterPinyinPairs = new List<CharacterPinyinPair>();
     protected override void OnInitialized()
     {
         levels = new List<string>
@@ -105,14 +118,33 @@
         StoryText = "";
         StoryTitle = "";
 
-        string titlePrompt = $"Create this title: {storyTitle} in Chinese.";
-        string storyPrompt = $"Compose story about {storyContent} using {selectedLevel} level Chinese.";
+        string titlePrompt = $"Create this title: {storyTitle} in Chinese. No English";
+        string storyPrompt = $"Compose story about {storyContent} using {selectedLevel} level Chinese. {(pinyinChoice == "Yes" ? "Include the pinyin for **every individual word** next to the word, within parentheses.." : "" )} ";
+
+        ChatMessage[] completion = new ChatMessage[]
+        {
+            new SystemChatMessage(
+            @"You are a Chinese language tutor. Your task is to write stories in Chinese only based on the proficiency level provided by the user, with no English translations, explanations, or other languages.
+
+            There are 4 proficiency levels:
+
+            Beginner: Use simple sentence structures, basic vocabulary, and minimal grammar complexity.
+            Intermediate: Use more varied sentence patterns, moderately complex grammar, and some idiomatic expressions.
+            Advanced: Use complex sentence structures, idiomatic expressions, and more abstract ideas with advanced vocabulary.
+            Native: Write naturally for a well-educated native speaker, using idioms, metaphors, and colloquial language.
+            The output must follow these rules:
+
+            Only Chinese characters and corresponding pinyin (if applicable).
+            Do not include any English or translation into other languages."
+            ),
+            new UserChatMessage(storyPrompt)
+        };
 
         try
         {
 
             StoryTitle = await OpenAiService.GenerateTitleAsync(titlePrompt);
-            StoryText = await OpenAiService.GenerateStoryAsync(storyPrompt);
+            StoryText = await OpenAiService.GenerateStoryAsync(completion);
 
         }
         catch (Exception ex)
