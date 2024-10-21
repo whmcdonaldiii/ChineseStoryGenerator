@@ -18,7 +18,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 //string? deployment = builder.Configuration["AZURE_OPENAI_DEPLOYMENT"];
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5146") });
 //builder.Services.AddScoped<IOpenAiService>(sp => new OpenAiService(key, endPoint, deployment));
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddMudServices();

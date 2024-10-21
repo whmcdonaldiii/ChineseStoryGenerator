@@ -140,11 +140,30 @@
             new UserChatMessage(storyPrompt)
         };
 
+        MyChatMessage mycompletion = new MyChatMessage()
+        {
+            SystemMessage = @"You are a Chinese language tutor. Your task is to write stories in Chinese only based on the proficiency level provided by the user, with no English translations, explanations, or other languages.
+
+            There are 4 proficiency levels:
+
+            Beginner: Use simple sentence structures, basic vocabulary, and minimal grammar complexity.
+            Intermediate: Use more varied sentence patterns, moderately complex grammar, and some idiomatic expressions.
+            Advanced: Use complex sentence structures, idiomatic expressions, and more abstract ideas with advanced vocabulary.
+            Native: Write naturally for a well-educated native speaker, using idioms, metaphors, and colloquial language.
+            The output must follow these rules:
+
+            Only Chinese characters and corresponding pinyin (if applicable).
+            Do not include any English or translation into other languages.
+
+            Do not new line characters, please",
+            UserMessage = storyPrompt
+        };
+
         try
         {
 
             StoryTitle = await OpenAiService.GenerateTitleAsync(titlePrompt);
-            StoryText = await OpenAiService.GenerateStoryAsync(completion);
+            StoryText = await OpenAiService.GenerateStoryAsync(mycompletion);
 
         }
         catch (Exception ex)

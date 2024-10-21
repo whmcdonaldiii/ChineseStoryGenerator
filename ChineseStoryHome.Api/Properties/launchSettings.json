@@ -1,0 +1,34 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "AZURE_OPENAI_API_KEY": "c6674722153041a2b9c34c8b7937241d",
+        "AZURE_OPENAI_ENDPOINT": "https://williamai.openai.azure.com/",
+        "AZURE_OPENAI_DEPLOYMENT": "gpt-4o-mini"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5146"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:44296",
+      "sslPort": 0
+    }
+  }
+}

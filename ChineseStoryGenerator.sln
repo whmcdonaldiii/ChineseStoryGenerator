@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChineseStoryGenerator", "ChineseStoryGenerator\ChineseStoryGenerator.csproj", "{803434BE-0CDF-4136-AB03-2CD2FEC629C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChineseStoryHome.Api", "ChineseStoryHome.Api\ChineseStoryHome.Api.csproj", "{1CBDE5E8-C031-4538-9146-CEBAAFB9D702}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{803434BE-0CDF-4136-AB03-2CD2FEC629C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{803434BE-0CDF-4136-AB03-2CD2FEC629C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{803434BE-0CDF-4136-AB03-2CD2FEC629C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CBDE5E8-C031-4538-9146-CEBAAFB9D702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CBDE5E8-C031-4538-9146-CEBAAFB9D702}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CBDE5E8-C031-4538-9146-CEBAAFB9D702}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CBDE5E8-C031-4538-9146-CEBAAFB9D702}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

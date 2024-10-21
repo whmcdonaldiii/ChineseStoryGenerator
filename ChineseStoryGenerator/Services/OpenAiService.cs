@@ -2,35 +2,46 @@
 using Azure;
 using OpenAI.Chat;
 using System.ClientModel;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text;
+using ChineseStoryGenerator.Models;
 
 namespace ChineseStoryGenerator.Services
 {
     public class OpenAiService : IOpenAiService
     {
-        private readonly ApiKeyCredential _credential;
-        private readonly AzureOpenAIClient _azureClient;
-        private readonly ChatClient _chatClient;
-        public OpenAiService(IConfiguration configuration)
-        {
-            string key = configuration["AZURE_OPENAI_API_KEY"];
-            string endPoint = configuration["AZURE_OPENAI_ENDPOINT"];
-            string deployment = configuration["AZURE_OPENAI_DEPLOYMENT"];
+        private readonly HttpClient _httpClient;
 
-            _credential = new(key);
-            _azureClient = new(new Uri(endPoint), _credential);
-            _chatClient = _azureClient.GetChatClient(deployment);
+        public OpenAiService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
         }
 
         public async Task<string> GenerateTitleAsync(string prompt)
         {
-            ChatCompletion completion = await _chatClient.CompleteChatAsync(prompt);
-            return completion.Content[0].Text;
+            var response = await _httpClient.PostAsJsonAsync("api/generate-title", prompt);
+            response.EnsureSuccessStatusCode();
+            string res = await response.Content.ReadAsStringAsync();
+            return await response.Content.ReadAsStringAsync();
         }
 
-        public async Task<string> GenerateStoryAsync(ChatMessage[] prompt)
+        public async Task<string> GenerateStoryAsync(MyChatMessage prompt)
         {
-            ChatCompletion completion = await _chatClient.CompleteChatAsync(prompt);
-            return completion.Content[0].Text;
+            try
+            {
+                string promptString = JsonSerializer.Serialize(prompt);
+                //var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsJsonAsync("api/generate-story", promptString);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+           
         }
     }
 }
