@@ -46,7 +46,7 @@ jobs:
         with:
           app-name: ChineseStoryGenerator
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D2A8DF5E99094649B97D6A83E1839664 }}
-          package: './publish-wasm.zip'
+          package: './ChineseStoryGenerator/publish-wasm'
 
   deploy-api:
     runs-on: windows-latest
@@ -57,4 +57,4 @@ jobs:
         with:
           app-name: williamapi
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B3D05F0F2AD54AC8AFA65391B1D13D4C }}
-          package: './publish-api.zip'
+          package: './ChineseStoryHome.Api/publish-api'
