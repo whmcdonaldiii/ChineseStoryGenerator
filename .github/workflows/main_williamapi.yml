@@ -28,7 +28,7 @@ jobs:
         run: dotnet build ./ChineseStoryGenerator.sln --configuration Release --no-restore
 
       - name: dotnet publish
-        run: dotnet publish ./ChineseStoryHome.Api -c Release --no-build --output './publish'
+        run: dotnet publish ./ChineseStoryHome.Api -c Release --no-build --output './publish-api'
 
       - name: Deployment
         uses: azure/webapps-deploy@v3
