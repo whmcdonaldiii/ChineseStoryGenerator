@@ -34,5 +34,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: ChineseStoryGeneratorApi
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F28D5C1AB88C4C75AF73B43ECD1E5AC0 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B3D05F0F2AD54AC8AFA65391B1D13D4C }}
           package: "./publish"
