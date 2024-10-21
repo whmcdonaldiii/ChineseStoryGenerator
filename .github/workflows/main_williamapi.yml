@@ -28,11 +28,11 @@ jobs:
         run: dotnet build ./ChineseStoryGenerator.sln --configuration Release --no-restore
 
       - name: dotnet publish
-        run: dotnet publish ./ChineseStoryHome.Api/ChineseStoryHome.Api.csproj -c Release --no-build --output './publish'
+        run: dotnet publish ./ChineseStoryHome.Api -c Release --no-build --output './publish'
 
       - name: Deployment
         uses: azure/webapps-deploy@v3
         with:
           app-name: ChineseStoryGeneratorApi
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D2A8DF5E99094649B97D6A83E1839664 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F28D5C1AB88C4C75AF73B43ECD1E5AC0 }}
           package: "./publish"
