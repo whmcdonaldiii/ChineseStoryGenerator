@@ -29,32 +29,16 @@ jobs:
       - name: Publish API
         run: dotnet publish ./ChineseStoryHome.Api/ChineseStoryHome.Api.csproj -c Release --no-build --output './publish-api'
 
-      # Zip the WASM app
-      - name: Zip WASM app
-        run: Compress-Archive -Path './publish-wasm/*' -DestinationPath './publish-wasm.zip'
-
-      # Zip the API
-      - name: Zip API
-        run: Compress-Archive -Path './publish-api/*' -DestinationPath './publish-api.zip'
-
-  deploy-wasm:
-    runs-on: windows-latest
-    needs: build
-    steps:
       - name: Deploy WASM app
         uses: azure/webapps-deploy@v3
         with:
           app-name: ChineseStoryGenerator
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D2A8DF5E99094649B97D6A83E1839664 }}
-          package: './ChineseStoryGenerator/publish-wasm'
+          package: './publish-wasm'
 
-  deploy-api:
-    runs-on: windows-latest
-    needs: build
-    steps:
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
           app-name: williamapi
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B3D05F0F2AD54AC8AFA65391B1D13D4C }}
-          package: './ChineseStoryGenerator/publish-api'
+          package: './publish-api'
