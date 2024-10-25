@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowLocalhost",
         builder =>
         {
-            builder.WithOrigins("https://localhost:7129") // Change to your Blazor app's URL
+            builder.WithOrigins("https://localhost:7129", "https://chinesestorygenerator-begyd4gyceetesht.centralus-01.azurewebsites.net/")// Change to your Blazor app's URL
                    .AllowAnyMethod()
                    .AllowAnyHeader();
         });
