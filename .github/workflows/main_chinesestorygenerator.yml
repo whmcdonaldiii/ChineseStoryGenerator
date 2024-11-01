@@ -29,6 +29,9 @@ jobs:
       - name: Publish API
         run: dotnet publish ./ChineseStoryHome.Api/ChineseStoryHome.Api.csproj -c Release --no-build --output './publish-api'
 
+      - name: Zip the API publish folder
+        run: Compress-Archive -Path ./publish-api/* -DestinationPath ./publish-api.zip
+        
       - name: Deploy WASM app
         uses: azure/webapps-deploy@v3
         with:
@@ -41,4 +44,4 @@ jobs:
         with:
           app-name: williamapi
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F28D5C1AB88C4C75AF73B43ECD1E5AC0 }}
-          package: './publish-api'
+          package: './publish-api.zip'
