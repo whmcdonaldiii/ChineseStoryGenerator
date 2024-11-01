@@ -21,7 +21,7 @@ jobs:
         run: dotnet restore ./ChineseStoryGenerator.sln
 
       - name: Build with dotnet
-        run: dotnet build ./ChineseStoryGenerator.sln --configuration Release --no-restore
+        run: dotnet build ./ChineseStoryGenerator/ChineseStoryGenerator.csproj --configuration Release --no-restore
 
       - name: Publish WASM app
         run: dotnet publish ./ChineseStoryGenerator/ChineseStoryGenerator.csproj -c Release --no-build --output './publish-wasm'
