@@ -27,7 +27,7 @@ jobs:
         run: dotnet publish ./ChineseStoryGenerator/ChineseStoryGenerator.csproj -c Release --no-build --output './publish-wasm'
 
       - name: Publish API
-        run: dotnet publish ./ChineseStoryHome.Api/ChineseStoryHome.Api.csproj -c Release --no-build --output './publish-api'
+        run: dotnet publish ./ChineseStoryHome.Api/ChineseStoryHome.Api.csproj -c Release --output './publish-api'
 
       - name: Zip the API publish folder
         run: Compress-Archive -Path ./publish-api/* -DestinationPath ./publish-api.zip
