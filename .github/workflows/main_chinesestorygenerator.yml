@@ -26,6 +26,9 @@ jobs:
       - name: Publish WASM app
         run: dotnet publish ./ChineseStoryGenerator/ChineseStoryGenerator.csproj -c Release --no-build --output './publish-wasm'
 
+      - name: Build with dotnet
+        run: dotnet build ./ChineseStoryHome.Api/ChineseStoryHome.Api.csproj --configuration Release --no-restore
+        
       - name: Publish API
         run: dotnet publish ./ChineseStoryHome.Api/ChineseStoryHome.Api.csproj -c Release --output './publish-api'
 
