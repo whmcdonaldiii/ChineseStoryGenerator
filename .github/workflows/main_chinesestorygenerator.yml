@@ -43,5 +43,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: williamapi
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F28D5C1AB88C4C75AF73B43ECD1E5AC0 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_WILLIAM_API }}
           package: './publish-api.zip'
