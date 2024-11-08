@@ -12,14 +12,12 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-//var appConfigConnectionString = builder.Configuration["AppConfigConnectionString"]; 
-//string? key = builder.Configuration["AZURE_OPENAI_API_KEY"];
-//string? endpoint = builder.Configuration["AZURE_OPENAI_ENDPOINT"];
-//string? deployment = builder.Configuration["AZURE_OPENAI_DEPLOYMENT"];
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+var apiBaseUrl = builder.Configuration["API_BaseUrl"];
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://williamapi-cqa3f5cdgnegejbu.centralus-01.azurewebsites.net/") });
-//builder.Services.AddScoped<IOpenAiService>(sp => new OpenAiService(key, endPoint, deployment));
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseUrl) });
+
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddMudServices();
 
